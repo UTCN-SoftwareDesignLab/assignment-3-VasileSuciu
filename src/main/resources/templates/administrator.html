@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Adminnistrator View</title>
+</head>
+<body>
+<form th:action="@{/logout}" method="GET">
+    <button name="logoutBtn"  type="submit" class="btn btn-success">LogOut</button>
+</form>
+<div>
+    <form th:action="@{/administrator}" method="GET">
+        <button name="doctorBtn"  type="submit" class="btn btn-success">Doctor View</button>
+    </form>
+</div>
+<div>
+    <form th:action="@{/administrator}" method="GET">
+        <button name="secretaryBtn"  type="submit" class="btn btn-success">Secretary View</button>
+    </form>
+</div>
+<div>
+    <span style="color:#FF0000;" th:text="${errorMessage2}"></span>
+</div>
+<form th:action="@{/administrator}" th:object="${user}" method="POST">
+    <div>Name  <input name="name" th:field="*{name}"  type="text" /></div>
+    <div>Username  <input name="user" th:field="*{username}"  type="text" /></div>
+    <div>Password  <input name="pass" th:field="*{password}"  type="password" /></div>
+    <div>Roles  <input name="role" th:field="*{roles}"  type="text" /></div>
+    <div>
+        <button name="createBtn"  type="submit" class="btn btn-success">Create</button>
+        <button name="updateBtn"  type="submit" class="btn btn-success">Update</button>
+        <button name="deleteBtn"  type="submit" class="btn btn-success">Delete</button>
+    </div>
+</form>
+<div>
+    <table>
+        <tr>
+            <td >Name</td>
+            <td >Username</td>
+            <td>Roles</td>
+        </tr>
+        <tbody>
+        <tr th:each="user : ${ userList }">
+            <td th:text="${ user.name }">Name</td>
+            <td th:text="${ user.username }">Username</td>
+            <td th:text="${ user.roles }">Roles</td>
+        </tr>
+
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

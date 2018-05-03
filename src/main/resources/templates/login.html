@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Log In</title>
+</head>
+<body>
+<p style="text-align: center;"><span style="color:#FF0000;" th:text="${errorMessage}"></span></p>
+
+<p style="text-align: center;"><strong>Log In</strong></p>
+<form th:action="@{/login}" th:object="${user}" method="POST">
+    <p style="text-align: center;">UserName</p>
+
+    <p style="text-align: center;"><input name="user" th:field="*{username}"  type="text" /></p>
+
+    <p style="text-align: center;">Password</p>
+
+    <p style="text-align: center;"><input name="pass" th:field="*{password}" type="password" /></p>
+    <div style="text-align: center;">
+        <button name="loginBtn"  type="submit" class="btn btn-success">Log In</button>
+    </div>
+</form>
+
+</body>
+</html>

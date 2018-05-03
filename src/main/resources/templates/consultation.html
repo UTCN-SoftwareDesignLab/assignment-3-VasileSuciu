@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Consultations</title>
+</head>
+<body>
+<form th:action="@{/logout}" method="GET">
+    <button name="logoutBtn"  type="submit" class="btn btn-success">LogOut</button>
+</form>
+<div>
+    <span style="color:#FF0000;" th:text="${errorMessage}"></span>
+</div>
+<div>
+    <form th:action="@{/consultation}" method="GET">
+        <button name="adminBtn"  type="submit" class="btn btn-success">Admin View</button>
+    </form>
+    <form th:action="@{/consultation}" method="GET">
+        <button name="doctorBtn"  type="submit" class="btn btn-success">Doctor View</button>
+    </form>
+    <form th:action="@{/consultation}" method="GET">
+        <button name="secretaryBtn"  type="submit" class="btn btn-success">Secretary View</button>
+    </form>
+</div>
+<form th:action="@{/consultation}" th:object="${consultationDTO}"  method="post">
+    <div>
+        Doctor
+        <select name="doctor" >
+            <option th:each="doctor2 : ${doctorList}" th:object="${consultationDTO.doctorID}" th:text="${doctor2.id + ' ' + doctor2.name}"></option>
+        </select>
+    </div>
+    <div>
+        Patient
+        <select name="patient" >
+            <option th:each="patient2 : ${patientList}" th:object="${consultationDTO.patientID}" th:text="${patient2.id + ' ' + patient2.name}"></option>
+        </select>
+    </div>
+    <div>Doctor ID <input name="doctorID" th:field="*{doctorID}"  type="number" /></div>
+    <div>Patient ID <input name="patientID" th:field="*{patientID}"  type="number" /></div>
+    <div>Appointment date <input name="date" th:field="*{consultationDate}"  type="text" /></div>
+    <div>Appointment ID <input name="ID" th:field="*{consultationID}"  type="number" /></div>
+    <button name="createBtn"  type="submit" class="btn btn-success">Make Appointment</button>
+    <button name="updateBtn"  type="submit" class="btn btn-success">Update</button>
+    <button name="deleteBtn"  type="submit" class="btn btn-success">Delete</button>
+</form>
+
+<div>
+    <table>
+        <tr>
+            <td >ID</td>
+            <td >PatientID</td>
+            <td>Patient Name</td>
+            <td>DoctorID</td>
+            <td >Doctor Name</td>
+            <td>Date</td>
+            <td>Observations</td>
+        </tr>
+        <tbody>
+        <tr th:each="consultation2 : ${ consultationList }">
+            <td th:text="${ consultation2.id }">ID</td>
+            <td th:text="${ consultation2.patient.id }">PatientID</td>
+            <td th:text="${ consultation2.patient.name}">Patient Name</td>
+            <td th:text="${ consultation2.doctor.id }">DoctorID</td>
+            <td th:text="${ consultation2.doctor.name }">Doctor Name</td>
+            <td th:text="${ consultation2.consultationDate}">Date</td>
+            <td th:text="${ consultation2.observations}">Observations</td>
+        </tr>
+
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
