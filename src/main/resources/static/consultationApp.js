@@ -45,6 +45,7 @@ function sendName() {
 function showGreeting(message) {
     $("#greetings").append("<tr><td>" + message + "</td></tr>");
 }
+/*
 function sendToJava(){
     var form = document.createElement("form");
     form.method = 'post';
@@ -75,6 +76,7 @@ function sendToJava(){
     form.submit();
     console.log("Message send")
 }
+*/
 
 $(function () {
     $("form").on('submit', function (e) {
