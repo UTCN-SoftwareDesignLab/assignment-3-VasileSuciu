@@ -4,45 +4,52 @@
 <head>
     <meta charset="UTF-8">
     <title>Consultations</title>
+    <link href="/main.css" rel="stylesheet">
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+    <script src="/consultationApp.js"></script>
 </head>
-<body>
+<body onload="connect()" onunload="disconnect()">
+
 <form th:action="@{/logout}" method="GET">
-    <button name="logoutBtn"  type="submit" class="btn btn-success">LogOut</button>
+    <button name="logoutBtn" id="logoutBtn"  type="submit" class="btn btn-success">LogOut</button>
 </form>
 <div>
     <span style="color:#FF0000;" th:text="${errorMessage}"></span>
 </div>
 <div>
     <form th:action="@{/consultation}" method="GET">
-        <button name="adminBtn"  type="submit" class="btn btn-success">Admin View</button>
+        <button name="adminBtn" id="adminBtn" type="submit" class="btn btn-success">Admin View</button>
     </form>
     <form th:action="@{/consultation}" method="GET">
-        <button name="doctorBtn"  type="submit" class="btn btn-success">Doctor View</button>
+        <button name="doctorBtn" id="doctorBtn" type="submit" class="btn btn-success">Doctor View</button>
     </form>
     <form th:action="@{/consultation}" method="GET">
-        <button name="secretaryBtn"  type="submit" class="btn btn-success">Secretary View</button>
+        <button name="secretaryBtn" id="secretaryBtn" type="submit" class="btn btn-success">Secretary View</button>
     </form>
 </div>
 <form th:action="@{/consultation}" th:object="${consultationDTO}"  method="post">
     <div>
         Doctor
-        <select name="doctor" >
+        <select name="doctor" id="doctorID">
             <option th:each="doctor2 : ${doctorList}" th:object="${consultationDTO.doctorID}" th:text="${doctor2.id + ' ' + doctor2.name}"></option>
         </select>
     </div>
     <div>
         Patient
-        <select name="patient" >
+        <select name="patient" id ="patientID">
             <option th:each="patient2 : ${patientList}" th:object="${consultationDTO.patientID}" th:text="${patient2.id + ' ' + patient2.name}"></option>
         </select>
     </div>
-    <div>Doctor ID <input name="doctorID" th:field="*{doctorID}"  type="number" /></div>
-    <div>Patient ID <input name="patientID" th:field="*{patientID}"  type="number" /></div>
-    <div>Appointment date <input name="date" th:field="*{consultationDate}"  type="text" /></div>
-    <div>Appointment ID <input name="ID" th:field="*{consultationID}"  type="number" /></div>
-    <button name="createBtn"  type="submit" class="btn btn-success">Make Appointment</button>
-    <button name="updateBtn"  type="submit" class="btn btn-success">Update</button>
-    <button name="deleteBtn"  type="submit" class="btn btn-success">Delete</button>
+    <!--
+    <div>Doctor ID <input name="doctorID"  th:field="*{doctorID}"  type="number" /></div>
+    <div>Patient ID <input name="patientID"  th:field="*{patientID}"  type="number" /></div> -->
+    <div>Appointment date <input name="date" id="date" th:field="*{consultationDate}"  type="text" /></div>
+    <div>Appointment ID <input name="consultationID" id="consultationID" th:field="*{consultationID}"  type="number" /></div>
+    <button name="createBtn" id = "createBtn" type="submit" class="btn btn-success">Make Appointment</button>
+    <button name="updateBtn" id="updateBtn" type="submit" class="btn btn-success">Update</button>
+    <button name="deleteBtn" id="deleteBtn" type="submit" class="btn btn-success">Delete</button>
 </form>
 
 <div>

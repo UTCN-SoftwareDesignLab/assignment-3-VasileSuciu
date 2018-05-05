@@ -10,6 +10,7 @@ import demo.model.validation.Notification;
 import demo.repository.ConsultationRepository;
 import demo.repository.PatientRepository;
 import demo.repository.UserRepository;
+import org.aspectj.weaver.ast.Not;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -64,12 +65,26 @@ public class ConsultationManagementServiceMySQL {
     }
 
     public Notification<Boolean> makeAppointment(Long patientID, Long doctorID, Date date){
-        Notification<Boolean> notification = new Notification<>();
+        Notification<Consultation> notification = checkAppointmnet(patientID,doctorID,date);
+        Notification<Boolean> returnedNotification = new Notification<Boolean>();
+        if (!notification.hasErrors()){
+            consultationRepository.save(notification.getResult());
+            returnedNotification.setResult(Boolean.TRUE);
+        }
+        else{
+            returnedNotification.setResult(Boolean.FALSE);
+            notification.getErrors().forEach(returnedNotification::addError);
+        }
+        return returnedNotification;
+    }
+
+    public Notification<Consultation> checkAppointmnet(Long patientID, Long doctorID, Date date){
+        Notification<Consultation> notification = new Notification<>();
         Optional<Patient> optionalPatient = patientRepository.findById(patientID);
         ConsultationBuilder consultationBuilder = new ConsultationBuilder();
         if (!validateOptionalPatient(optionalPatient)){
             notification.addError("No such patient");
-            notification.setResult(Boolean.FALSE);
+            notification.setResult(null);
         }
         else {
             consultationBuilder.setPatient(optionalPatient.get());
@@ -77,7 +92,7 @@ public class ConsultationManagementServiceMySQL {
         Optional<User> optionalUser = userRepository.findById(doctorID);
         if (!validateOptionalDoctor(optionalUser)){
             notification.addError("No such doctor");
-            notification.setResult(Boolean.FALSE);
+            notification.setResult(null);
         }
         else {
             consultationBuilder.setDoctor(optionalUser.get());
@@ -88,12 +103,11 @@ public class ConsultationManagementServiceMySQL {
         ConsultationValidator consultationValidator = new ConsultationValidator(consultation, consultationRepository);
         boolean consultationValid = consultationValidator.validate();
         if (consultationValid){
-            consultationRepository.save(consultation);
-            notification.setResult(Boolean.TRUE);
+            notification.setResult(consultation);
         }
         else {
             consultationValidator.getErrors().forEach(notification::addError);
-            notification.setResult(Boolean.FALSE);
+            notification.setResult(null);
         }
         return notification;
     }

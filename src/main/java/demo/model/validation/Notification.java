@@ -25,6 +25,10 @@ public class Notification<T> {
         this.result = result;
     }
 
+    public List<String> getErrors(){
+        return  this.errors;
+    }
+
     public T getResult() throws ResultFetchException {
         if (hasErrors()) {
             throw new ResultFetchException(errors);

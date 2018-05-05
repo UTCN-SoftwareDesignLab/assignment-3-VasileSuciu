@@ -13,6 +13,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
@@ -42,11 +43,12 @@ public class DoctorController {
         return "doctor";
     }
 
+    /*
     @RequestMapping(value = "/doctor", params="patientBtn", method = RequestMethod.POST)
     public String handlePatientChange(ModelMap model,  @ModelAttribute("patient") Patient patient) {
         List<Consultation> consultations = new ArrayList<>();
         /*consultationManagementServiceMySQL.getAllConsultationsForPatient(
-                patientManagementServiceMySQL.getPatient(patient.getId()));*/
+                patientManagementServiceMySQL.getPatient(patient.getId()));
         Notification<List<Consultation>> notification = consultationManagementServiceMySQL.getAppointmentsForPatient(patient.getId());
         if (notification.hasErrors()){
             model.addAttribute("errorMessage", notification.getFormattedErrors());
@@ -99,6 +101,65 @@ public class DoctorController {
     }
 
     @RequestMapping(value = "/doctor", params="consultationBtn", method = RequestMethod.GET)
+    public String handleConsultationView(ModelMap model) {
+        return "redirect:consultation";
+    }
+    */
+    @RequestMapping(value = "/addObservation", method = RequestMethod.GET)
+    public String handleConsultationObservation(ModelMap model, @RequestParam("consultationID") Long consultationID,
+                                                @RequestParam("observation") String observation, @ModelAttribute("consultation") Consultation consultation) {
+        System.out.println(consultationID);
+        Notification<Boolean> notification = consultationManagementServiceMySQL.addConsultationObservation(consultationID,
+                observation);
+        if (notification.hasErrors()){
+            model.addAttribute("errorMessage", notification.getFormattedErrors());
+        }
+        consultation = consultationManagementServiceMySQL.getConsultation(consultationID);
+        if (consultation != null) {
+            List<Consultation> consultations = consultationManagementServiceMySQL.getAppointmentsForPatient(consultation.getPatient().getId()).getResult();
+            model.addAttribute("consultationList", consultations);
+            model.addAttribute("consultationList2", consultations);
+            model.addAttribute("errorMessage", "");
+        }
+        else {
+            model.addAttribute("errorMessage","Invalid consultation id");
+        }
+        model.addAttribute("patientList", patientManagementServiceMySQL.getAllPatients());
+        model.addAttribute("patient", new Patient());
+        model.addAttribute("consultation", new Consultation());
+        return "doctor";
+    }
+
+    @RequestMapping(value = "/viewPatient", method = RequestMethod.GET)
+    public String handlePatientChange(ModelMap model, @RequestParam("patientID") Long patientID, @ModelAttribute("patient") Patient patient) {
+        //System.out.println("Patients ID " +patientID);
+        List<Consultation> consultations = new ArrayList<>();
+        Notification<List<Consultation>> notification = consultationManagementServiceMySQL.getAppointmentsForPatient(patientID);
+        if (notification.hasErrors()){
+            model.addAttribute("errorMessage", notification.getFormattedErrors());
+        }
+        else{
+            consultations = notification.getResult();
+        }
+        model.addAttribute("consultationList", consultations);
+        model.addAttribute("consultationList2", consultations);
+        model.addAttribute("patientList", patientManagementServiceMySQL.getAllPatients());
+        model.addAttribute("patient", new Patient());
+        model.addAttribute("consultation", new Consultation());
+        return "doctor";
+    }
+
+    @RequestMapping(value = "/secretaryChange2", method = RequestMethod.GET)
+    public String handleSecretaryView(ModelMap model) {
+        return "redirect:secretary";
+    }
+
+    @RequestMapping(value = "/administratorChange2", method = RequestMethod.GET)
+    public String handleAdministratorView(ModelMap model) {
+        return "redirect:administrator";
+    }
+
+    @RequestMapping(value = "/consultationChange2", method = RequestMethod.GET)
     public String handleConsultationView(ModelMap model) {
         return "redirect:consultation";
     }
