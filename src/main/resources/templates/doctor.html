@@ -49,7 +49,7 @@
         <option th:each="patient2 : ${patientList}" th:text="${patient2.id + ' '+ patient2.name}"></option>
     </select>
 </div>
-<form th:action="@{/doctor}" th:object="${patient}"  method="post">
+<form th:action="@{/doctor}"   method="post">
 
     <!--<div>Patient ID <input name="patientID"  th:field="*{id}"  type="number" /></div>-->
     <button name="patientBtn" id="patientBtn" type="submit" class="btn btn-success">Select patient</button>
@@ -61,10 +61,10 @@
         <option th:each="consultation2 : ${consultationList}"  th:text="${consultation2.id + ' ' + consultation2.doctor.name}"></option>
     </select>
 </div>
-<form th:action="@{/doctor}" th:object="${consultation}"  method="post">
+<form th:action="@{/doctor}"   method="post">
 
     <!--<div>Consultation ID <input name="consultationID" th:field="*{id}"  type="number" /></div>-->
-    <div>Observation<input name="observation" id="observation" th:field="*{observations}"  type="text" /></div>
+    <div>Observation<input name="observation" id="observation"  type="text" /></div>
     <button name="addObservationBtn" id="addObservationBtn" type="submit" class="btn btn-success">Add Observation</button>
 </form>
 

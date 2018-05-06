@@ -29,24 +29,24 @@
         <button name="secretaryBtn" id="secretaryBtn" type="submit" class="btn btn-success">Secretary View</button>
     </form>
 </div>
-<form th:action="@{/consultation}" th:object="${consultationDTO}"  method="post">
+<form th:action="@{/consultation}"   method="post">
     <div>
         Doctor
         <select name="doctor" id="doctorID">
-            <option th:each="doctor2 : ${doctorList}" th:object="${consultationDTO.doctorID}" th:text="${doctor2.id + ' ' + doctor2.name}"></option>
+            <option th:each="doctor2 : ${doctorList}"  th:text="${doctor2.id + ' ' + doctor2.name}"></option>
         </select>
     </div>
     <div>
         Patient
         <select name="patient" id ="patientID">
-            <option th:each="patient2 : ${patientList}" th:object="${consultationDTO.patientID}" th:text="${patient2.id + ' ' + patient2.name}"></option>
+            <option th:each="patient2 : ${patientList}"  th:text="${patient2.id + ' ' + patient2.name}"></option>
         </select>
     </div>
     <!--
     <div>Doctor ID <input name="doctorID"  th:field="*{doctorID}"  type="number" /></div>
     <div>Patient ID <input name="patientID"  th:field="*{patientID}"  type="number" /></div> -->
-    <div>Appointment date <input name="date" id="date" th:field="*{consultationDate}"  type="text" /></div>
-    <div>Appointment ID <input name="consultationID" id="consultationID" th:field="*{consultationID}"  type="number" /></div>
+    <div>Appointment date <input name="date" id="date"   type="text" /></div>
+    <div>Appointment ID <input name="consultationID" id="consultationID"   type="number" /></div>
     <button name="createBtn" id = "createBtn" type="submit" class="btn btn-success">Make Appointment</button>
     <button name="updateBtn" id="updateBtn" type="submit" class="btn btn-success">Update</button>
     <button name="deleteBtn" id="deleteBtn" type="submit" class="btn btn-success">Delete</button>

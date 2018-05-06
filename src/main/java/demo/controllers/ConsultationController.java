@@ -1,9 +1,6 @@
 package demo.controllers;
 
-import demo.model.Consultation;
-import demo.model.ConsultationDTO;
-import demo.model.Patient;
-import demo.model.User;
+
 import demo.model.validation.Notification;
 import demo.service.ConsultationManagementServiceMySQL;
 import demo.service.PatientManagementServiceMySQL;
@@ -34,7 +31,6 @@ public class ConsultationController {
         model.addAttribute("doctorList", userManagementServiceMySQL.getAllDoctors());
         model.addAttribute("patientList",patientManagementServiceMySQL.getAllPatients());
         model.addAttribute("consultationList",consultationManagementServiceMySQL.getAllConsultations());
-        model.addAttribute("consultationDTO", new ConsultationDTO());
         return "consultation";
     }
 
@@ -130,7 +126,7 @@ public class ConsultationController {
 
     @RequestMapping(value = "/makeAppointment", method = RequestMethod.GET)
     public String handleConsultationCreate(ModelMap model, @RequestParam("doctorID") Long doctorID,
-                                      @RequestParam("patientID") Long patientID,  @RequestParam("date") String appointmentDate, @ModelAttribute("consultationDTO") ConsultationDTO consultationDTO) {
+                                      @RequestParam("patientID") Long patientID,  @RequestParam("date") String appointmentDate) {
         try {
             String pattern = "dd.MM.yyyy";
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
@@ -158,7 +154,7 @@ public class ConsultationController {
 
     @RequestMapping(value = "/updateAppointment", method = RequestMethod.GET)
     public String handleConsultationUpdate(ModelMap model, @RequestParam("consultationID") Long consultationID,
-                                           @RequestParam("date") String appointmentDate, @ModelAttribute("consultationDTO") ConsultationDTO consultationDTO) {
+                                           @RequestParam("date") String appointmentDate) {
         try {
             String pattern = "dd.MM.yyyy";
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
@@ -188,7 +184,7 @@ public class ConsultationController {
     }
 
     @RequestMapping(value = "/deleteAppointment", method = RequestMethod.GET)
-    public String handleConsultationDelete(ModelMap model,  @RequestParam("consultationID") Long consultationID, @ModelAttribute("consultationDTO") ConsultationDTO consultationDTO) {
+    public String handleConsultationDelete(ModelMap model,  @RequestParam("consultationID") Long consultationID) {
         //System.out.println(consultationID+"something");
         //System.out.println(consultationDTO.getConsultationID());
         if (consultationID!=null) {

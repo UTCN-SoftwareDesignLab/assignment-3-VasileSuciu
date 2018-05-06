@@ -30,8 +30,8 @@ public class DoctorController {
     @RequestMapping(value = "/doctor", method = RequestMethod.GET)
     public String showDoctorPage(ModelMap model){
         model.addAttribute("errorMessage", "");
-        model.addAttribute("patient", new Patient());
-        model.addAttribute("consultation", new Consultation());
+        //model.addAttribute("patient", new Patient());
+        //model.addAttribute("consultation", new Consultation());
         List<Patient> patients = patientManagementServiceMySQL.getAllPatients();
         model.addAttribute("patientList", patients);
         List<Consultation> consultations = new ArrayList<>();
@@ -107,14 +107,14 @@ public class DoctorController {
     */
     @RequestMapping(value = "/addObservation", method = RequestMethod.GET)
     public String handleConsultationObservation(ModelMap model, @RequestParam("consultationID") Long consultationID,
-                                                @RequestParam("observation") String observation, @ModelAttribute("consultation") Consultation consultation) {
+                                                @RequestParam("observation") String observation) {
         System.out.println(consultationID);
         Notification<Boolean> notification = consultationManagementServiceMySQL.addConsultationObservation(consultationID,
                 observation);
         if (notification.hasErrors()){
             model.addAttribute("errorMessage", notification.getFormattedErrors());
         }
-        consultation = consultationManagementServiceMySQL.getConsultation(consultationID);
+        Consultation consultation = consultationManagementServiceMySQL.getConsultation(consultationID);
         if (consultation != null) {
             List<Consultation> consultations = consultationManagementServiceMySQL.getAppointmentsForPatient(consultation.getPatient().getId()).getResult();
             model.addAttribute("consultationList", consultations);
@@ -131,7 +131,7 @@ public class DoctorController {
     }
 
     @RequestMapping(value = "/viewPatient", method = RequestMethod.GET)
-    public String handlePatientChange(ModelMap model, @RequestParam("patientID") Long patientID, @ModelAttribute("patient") Patient patient) {
+    public String handlePatientChange(ModelMap model, @RequestParam("patientID") Long patientID) {
         //System.out.println("Patients ID " +patientID);
         List<Consultation> consultations = new ArrayList<>();
         Notification<List<Consultation>> notification = consultationManagementServiceMySQL.getAppointmentsForPatient(patientID);
